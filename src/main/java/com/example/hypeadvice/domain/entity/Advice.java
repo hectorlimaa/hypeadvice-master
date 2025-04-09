@@ -1,8 +1,12 @@
 package com.example.hypeadvice.domain.entity;
 
 import com.google.gson.annotations.Expose;
-import lombok.Data;
+
+import lombok.*;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 
 @Data
 @javax.persistence.Entity
@@ -13,13 +17,17 @@ public class Advice extends Entity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Expose
+    @NotBlank(message = "O nome é obrigatório")
     @Column(name = "NOME", length = 100)
     private String nome;
 
-    @Expose
+    @NotBlank(message = "A descrição é obrigatória")
     @Column(name = "DESCRICAO", columnDefinition = "TEXT", length = 1000, nullable = false)
     private String descricao;
+
+    @NotNull(message = "O tipo de conselho é obrigatório")
+    @Enumerated(EnumType.STRING)
+    private TipoConselho tipo;
 
     public Advice(String adviceStr) {
         this.descricao = adviceStr;
@@ -27,5 +35,10 @@ public class Advice extends Entity {
 
     public Advice() {
 
+    }
+
+    @Override
+    public Long getId() {
+        return this.id;
     }
 }

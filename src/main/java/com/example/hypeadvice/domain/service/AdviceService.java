@@ -19,7 +19,12 @@ public class AdviceService {
 
     @Transactional(rollbackFor = Exception.class)
     public Advice save(Advice analiseContrato) {
-        return adviceRepository.saveAndFlush(analiseContrato);
+        return adviceRepository.save(analiseContrato);
+    }
+
+    @Transactional (rollbackFor = Exception.class)
+    public void delete(Advice analiseContrato) {
+        adviceRepository.delete(analiseContrato);
     }
 
     @Transactional(rollbackFor = Exception.class)

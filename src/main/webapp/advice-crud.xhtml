@@ -21,34 +21,43 @@
 	</b:navBar>
 	<b:container>
 		<b:jumbotron>
-			<b:messages globalOnly="true" showSummary="true" redisplay="false" id="mensagensGlobais"/>
 			<h:form id="form-advice">
-				<b:form>
+					<h:messages id="mensagensGlobais" globalOnly="true" layout="table" style="color: red;" />
 					<b:inputText id="name" placeholder="Nome..." value="#{adviceBean.advice.nome}" label="Cadastrar Conselho"/>
 					<b:message for="@previous" />
-
+                    <br></br>
 					<b:inputTextarea placeholder="Descrição..." value="#{adviceBean.advice.descricao}" />
 					<b:message for="@previous" />
-
-					<b:commandButton actionListener="#{adviceBean.salvar}"  update="form-advice form-advice-list mensagensGlobais" value="Salvar" />
-					<b:commandButton actionListener="#" look="info"  value="Gerar" >
+					<br></br> <br></br>
+					<h:panelGrid  colMd="6" class="mb-3" styleClass="form-grid">
+					<h:outputLabel value="Tipo de Conselho: " for="tipo"/>
+					<h:selectOneMenu id="tipo" value="#{adviceBean.advice.tipo}" required="true" requiredMessage="O tipo de conselho é obrigatório.">
+					<f:selectItem  style="margin-right: 10px;"  itemLabel="Selecione o item" itemValue="#{null}" />
+					<f:selectItems value="#{adviceBean.tiposConselho}" var="tipo"
+								   itemValue="#{tipo}" itemLabel="#{tipo}" />
+					</h:selectOneMenu>
+						<h:message for="tipo" style="color: red;" />
+					</h:panelGrid>
+					<br></br>
+					<b:commandButton actionListener="#{adviceBean.salvar}"  update="form-advice-list form-advice mensagensGlobais" value="Salvar" style="margin-right: 10px;"  />
+					<b:commandButton actionListener="#{adviceBean.gerar}" look="info"  value="Gerar" >
 						<f:ajax onevent="click" listener="#{adviceBean.gerar}" render="form-advice"/>
 					</b:commandButton>
-				</b:form>
 			</h:form>
 		</b:jumbotron>
 		<b:jumbotron>
 			<h:form id="form-advice-list">
 				<h4 style="text-align:center">Conselhos Cadastrados</h4>
 				<b:dataTable value="#{adviceBean.advices}"
-							 var="advice">
-					<b:dataTableColumn style="width:10%" value="#{advice.id}" />
-					<b:dataTableColumn value="#{advice.nome}" />
-					<b:dataTableColumn value="#{advice.descricao}" />
-					<b:dataTableColumn style="width:20%">
-						<b:commandButton actionListener="#"  look="warning" update="form-advice form-advice-list" value="Editar" />
-						<b:commandButton actionListener="#"  look="danger" update="form-advice form-advice-list" value="Excluir" />
-					</b:dataTableColumn>
+										   var="advice">
+				<b:dataTableColumn style="width:10%" value="#{advice.id}" />
+				<b:dataTableColumn value="#{advice.nome}" />
+				<b:dataTableColumn value="#{advice.descricao}" />
+				<b:dataTableColumn value="#{advice.tipo}" />
+				<b:dataTableColumn style="width:20%; color: transparent;">
+					<b:commandButton actionListener="#{adviceBean.editar(advice)}"  look="warning" update="form-advice form-advice-list" value="Editar" style="margin-right: 10px;" />
+					<b:commandButton actionListener="#{adviceBean.excluir(advice)}"  look="danger" update="form-advice form-advice-list form-advice:mensagensGlobais" value="Excluir" />
+				</b:dataTableColumn>
 				</b:dataTable>
 			</h:form>
 		</b:jumbotron>

@@ -1,17 +1,24 @@
 package com.example.hypeadvice.domain.bean;
 
 import com.example.hypeadvice.domain.entity.Advice;
+import com.example.hypeadvice.domain.entity.TipoConselho;
 import com.example.hypeadvice.domain.service.AdviceService;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.util.Arrays;
 import java.util.List;
 
 @Named
 @ViewScoped
+@Component
 public class AdviceBean extends Bean {
 
     @Autowired AdviceService adviceService;
@@ -32,10 +39,31 @@ public class AdviceBean extends Bean {
     }
 
     public void salvar() {
+        if (!advice.getNome().matches("^[A-Za-z ]+$")) {
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "Nome inválido.", "Nome inválido."));
+            return;
+        }
+
         adviceService.save(advice);
-        advices.add(advice);
+        if(advice.getId() == null){
+            advices.add(advice);
+        }
         adicionarAdvice();
-        addFaceMessage(FacesMessage.SEVERITY_INFO, "Sucesso", null);
+        addFaceMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Sucesso");
+
+    }
+
+    public void excluir(Advice advice) {
+        adviceService.delete(advice);
+        advices.remove(advice);
+
+        addFaceMessage(FacesMessage.SEVERITY_INFO, "Item excluido com sucesso", "Sucesso");
+
+    }
+
+    public void editar(Advice advice) {
+        this.advice = advice;
     }
 
     public void gerar() {
@@ -44,6 +72,10 @@ public class AdviceBean extends Bean {
         } catch (UnirestException e) {
             addMessageError(e);
         }
+    }
+
+    public List<TipoConselho> getTiposConselho() {
+        return Arrays.asList(TipoConselho.values());
     }
 
     public void adicionarAdvice() {
