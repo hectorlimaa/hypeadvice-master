@@ -10,5 +10,5 @@ import java.util.Optional;
 public interface AdviceRepository extends JpaRepository<Advice, Long> {
 
     Optional<Advice> findById(Long assinanteId);
-    Optional<Advice> findByDescricao(String descricao);
+    Optional<Advice> findByDescricaoContaining(String descricao);
 }

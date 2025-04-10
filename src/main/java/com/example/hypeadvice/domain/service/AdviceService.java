@@ -39,7 +39,7 @@ public class AdviceService {
 
     @Transactional(readOnly = true)
     public Advice findByDescr(String descricao) {
-        return adviceRepository.findByDescricao(descricao).orElse(null);
+        return adviceRepository.findByDescricaoContaining(descricao).orElse(null);
     }
 
     public Advice gerar() throws UnirestException {
