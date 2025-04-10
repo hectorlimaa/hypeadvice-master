@@ -6,7 +6,7 @@
 	  xmlns:f="http://xmlns.jcp.org/jsf/core"
 	  xmlns:b="http://bootsfaces.net/ui">
 <f:metadata>
-	<f:viewAction action="#{adviceListBean.init}"/>
+	<f:viewAction action="#{adviceListBean.initBean}"/>
 </f:metadata>
 <h:head>
 	<title>Hype Advice - Cadastro</title>
@@ -21,25 +21,35 @@
 	</b:navBar>
 	<b:container>
 		<b:jumbotron>
-			<b:messages globalOnly="true" showSummary="true" redisplay="false" id="mensagensGlobais"/>
-			<h:form id="form-advice">
-				<b:form>
-					<b:inputTextarea label="Pesquisar Conselho por Descrição" placeholder="Descrição..." value="#{adviceListBean.advice.descricao}" />
+			<h:form id="form-advice-descricao">
+				<b:messages globalOnly="true" showSummary="true" redisplay="false" id="mensagensGlobais"/>
+					<b:inputText label="Pesquisar Conselho por Descrição" placeholder="Descrição..." value="#{adviceListBean.descricao}" style="margin-top: 10px;" />
 					<b:message for="@previous" />
 
-					<b:commandButton actionListener="#{adviceListBean.buscar}" look="info"  update="form-advice-list mensagensGlobais" value="Buscar" >
+					<b:commandButton actionListener="#{adviceListBean.buscarDesc}" look="info"  update="form-advice-list mensagensGlobais" value="Buscar" >
 					</b:commandButton>
-				</b:form>
 			</h:form>
+            <br></br>
+			<h:form id="form-advice-id">
+				<b:messages globalOnly="true" showSummary="true" redisplay="false" id="mensagensGlobais"/>
+				<b:inputText label="Pesquisar Conselho por ID" placeholder="ID..." value="#{adviceListBean.id}" type="number" style="margin-top: 10px;" />
+				<b:message for="@previous" />
+
+				<b:commandButton actionListener="#{adviceListBean.buscarID()}" look="info"  update="form-advice-list mensagensGlobais" value="Buscar" >
+				</b:commandButton>
+			</h:form>
+
+
 		</b:jumbotron>
 		<b:jumbotron>
 			<h:form id="form-advice-list">
 				<h4 style="text-align:center">Conselhos Localizados</h4>
-				<b:dataTable value="#{adviceListBean.adviceListVO.slips}"
+				<b:dataTable value="#{adviceListBean.itens}"
 							 var="advice">
-					<b:dataTableColumn style="width:10%" value="#{advice.id}" />
-					<b:dataTableColumn value="#{advice.advice}" />
-					<b:dataTableColumn value="#{advice.date}" />
+					<b:dataTableColumn value="#{advice.id}" />
+					<b:dataTableColumn value="#{advice.nome}" />
+					<b:dataTableColumn value="#{advice.descricao}" />
+					<b:dataTableColumn value="#{advice.tipo}" />
 				</b:dataTable>
 			</h:form>
 		</b:jumbotron>

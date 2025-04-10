@@ -33,6 +33,11 @@ public class Advice extends Entity {
         this.descricao = adviceStr;
     }
 
+    public Advice(long id, String adviceStr) {
+        this.id = id;
+        this.descricao = adviceStr;
+    }
+
     public Advice() {
 
     }

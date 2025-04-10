@@ -22,7 +22,7 @@
 	<b:container>
 		<b:jumbotron>
 			<h:form id="form-advice">
-					<h:messages id="mensagensGlobais" globalOnly="true" layout="table" style="color: red;" />
+					<b:messages globalOnly="true" showSummary="true" redisplay="false" id="mensagensGlobais"/>
 					<b:inputText id="name" placeholder="Nome..." value="#{adviceBean.advice.nome}" label="Cadastrar Conselho"/>
 					<b:message for="@previous" />
                     <br></br>
@@ -41,7 +41,7 @@
 					<br></br>
 					<b:commandButton actionListener="#{adviceBean.salvar}"  update="form-advice-list form-advice mensagensGlobais" value="Salvar" style="margin-right: 10px;"  />
 					<b:commandButton actionListener="#{adviceBean.gerar}" look="info"  value="Gerar" >
-						<f:ajax onevent="click" listener="#{adviceBean.gerar}" render="form-advice"/>
+						<f:ajax onevent="click" listener="#{adviceBean.salvar}" render="form-advice-list"/>
 					</b:commandButton>
 			</h:form>
 		</b:jumbotron>

@@ -148,6 +148,13 @@
 			<artifactId>hibernate-validator</artifactId>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.joinfaces/jsf-spring-boot-starter -->
+		<dependency>
+			<groupId>org.joinfaces</groupId>
+			<artifactId>jsf-spring-boot-starter</artifactId>
+			<version>4.5.7</version>
+		</dependency>
+
 
 
 	</dependencies>

@@ -3,6 +3,7 @@ package com.example.hypeadvice.domain.bean;
 import com.example.hypeadvice.domain.entity.Advice;
 import com.example.hypeadvice.domain.entity.TipoConselho;
 import com.example.hypeadvice.domain.service.AdviceService;
+import com.example.hypeadvice.domain.service.AdvicesLIPService;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,8 +12,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,6 +21,7 @@ import java.util.List;
 public class AdviceBean extends Bean {
 
     @Autowired AdviceService adviceService;
+    @Autowired AdvicesLIPService adviceAPIService;
 
     private Advice advice = new Advice();
     private List<Advice> advices;
@@ -50,7 +50,7 @@ public class AdviceBean extends Bean {
             advices.add(advice);
         }
         adicionarAdvice();
-        addFaceMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Sucesso");
+        addFaceMessage(FacesMessage.SEVERITY_INFO, "Item salvo com sucesso", null);
 
     }
 
@@ -58,7 +58,7 @@ public class AdviceBean extends Bean {
         adviceService.delete(advice);
         advices.remove(advice);
 
-        addFaceMessage(FacesMessage.SEVERITY_INFO, "Item excluido com sucesso", "Sucesso");
+        addFaceMessage(FacesMessage.SEVERITY_INFO, "Item excluido com sucesso", null);
 
     }
 
@@ -72,6 +72,30 @@ public class AdviceBean extends Bean {
         } catch (UnirestException e) {
             addMessageError(e);
         }
+    }
+
+    public void consultaID(Integer id){
+        try{
+            Advice item = adviceAPIService.buscarById(id);
+            advices.clear();
+            advices.add(item);
+            addFaceMessage(FacesMessage.SEVERITY_INFO, "Item encontrado!", null);
+        } catch (Exception e) {
+            addFaceMessage(FacesMessage.SEVERITY_ERROR, "Erro na consulta.", e.getMessage());
+        }
+
+    }
+
+    public void consultaDescricao(String descricao){
+        try{
+            Advice item = adviceAPIService.buscarByDescricao(descricao);
+            advices.clear();
+            advices.add(item);
+            addFaceMessage(FacesMessage.SEVERITY_INFO, "Item encontrado!", null);
+        } catch (Exception e) {
+            addFaceMessage(FacesMessage.SEVERITY_ERROR, "Erro na consulta.", e.getMessage());
+        }
+
     }
 
     public List<TipoConselho> getTiposConselho() {

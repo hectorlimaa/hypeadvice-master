@@ -32,15 +32,17 @@ public class AdviceService {
         return adviceRepository.findAll();
     }
 
-    public Advice gerar() throws UnirestException {
-        return advicesLIPService.gerar();
+    @Transactional(readOnly = true)
+    public Advice findById(Integer id) {
+        return adviceRepository.findById(Long.valueOf(id)).orElse(null);
     }
 
-    public AdviceListVO buscar(Advice advice) throws UnirestException {
-      String descricao = advice.getDescricao();
-      if (StringUtils.isNotBlank(descricao)) {
-          return advicesLIPService.buscarByDescricao(descricao);
-      }
-      return null;
+    @Transactional(readOnly = true)
+    public Advice findByDescr(String descricao) {
+        return adviceRepository.findByDescricao(descricao).orElse(null);
+    }
+
+    public Advice gerar() throws UnirestException {
+        return advicesLIPService.gerar();
     }
 }
